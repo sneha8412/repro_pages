@@ -45,10 +45,29 @@
                 registration.pushManager.subscribe({ applicationServerKey: kSecondApplicationServerKey, userVisibleOnly: true })]
             );
         }).then(results => {
-            const subscription = results[0];
-            const error = results[1].reason;
-            const error_string = `${error.name} - ${error.message}`;
-            log(JSON.stringify([subscription, error_string]));
+            
+            console.log(JSON.stringify(results));
+
+            let output = [];
+
+            for (let i=0; i < results.length; i++)
+            {
+                if (results[i].status == 'fulfilled'){
+                    output.push(results[i]);
+                }
+                else{
+                    const error = results[i].reason;
+                    const error_string = `${error.name} - ${error.message}`;
+                    output.push({ status: "rejected", error: error_string });
+                }
+            }
+
+            console.log(JSON.stringify(output));
+
+            // const subscription = results[0];
+            // const error = results[1].reason;
+            // const error_string = `${error.name} - ${error.message}`;
+            // log(JSON.stringify([subscription, error_string]));
         });
     }
 
